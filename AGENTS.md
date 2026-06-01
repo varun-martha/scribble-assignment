@@ -36,6 +36,11 @@ You are working on a monolithic repository for a multiplayer drawing game ("Scri
 -   **No Databases**: Do not use any database (SQL, NoSQL, SQLite, etc.). All data is stored in-memory only.
 -   **No Authentication**: Do not add authentication, sessions, JWT, or OAuth.
 
+## AI Usage Guidelines
+-   **Transparency**: Document all significant architectural scaffolding, repetitive boilerplate generation, and complex test writing performed by AI in the project `reflection.md`.
+-   **Constraints Adherence**: AI must strictly adhere to the technical constraints of the project (e.g., no WebSockets, no databases). Do not allow AI to install unauthorized dependencies to bypass constraints.
+-   **Verification**: All AI-generated logic must be thoroughly reviewed for deterministic behavior and covered by automated tests before merging to the `main` branch.
+
 ## Agent Persona
 -   Give concise, direct answers.
 -   Do not output large blocks of code if a small change suffices.

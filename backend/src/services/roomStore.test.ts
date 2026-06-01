@@ -74,4 +74,41 @@ describe("roomStore Game Logic", () => {
     expect(resetRes.room.status).toBe("lobby");
     expect(resetRes.room.scores[hostRes.participantId]).toBe(0);
   });
+
+  it("handles case-insensitive guess matching correctly", async () => {
+    const hostRes = createRoom("Host");
+    const guesserRes = joinRoom(hostRes.room.code, "Guesser");
+    startGame(hostRes.room.code, hostRes.participantId);
+    
+    // Select "pizza"
+    const selectedWord = "pizza";
+    selectWord(hostRes.room.code, guesserRes.participantId, selectedWord);
+
+    // Guess "PiZzA" with trailing spaces
+    const guessRes = addGuess(hostRes.room.code, hostRes.participantId, "  PiZzA  ");
+    expect(guessRes.room.guesses).toHaveLength(1);
+    expect(guessRes.room.guesses[0].isCorrect).toBe(true);
+  });
+
+  it("enforces rate-limit on guesses", async () => {
+    const hostRes = createRoom("Host");
+    const guesserRes = joinRoom(hostRes.room.code, "Guesser");
+    startGame(hostRes.room.code, hostRes.participantId);
+    
+    const selectedWord = "pizza";
+    selectWord(hostRes.room.code, guesserRes.participantId, selectedWord);
+
+    // First guess should succeed
+    addGuess(hostRes.room.code, hostRes.participantId, "wrong 1");
+
+    // Immediate second guess should throw rate limit error
+    expect(() => addGuess(hostRes.room.code, hostRes.participantId, "wrong 2")).toThrow("Rate limit exceeded. Please wait 1 second between guesses.");
+
+    // Wait 1 second
+    await new Promise(r => setTimeout(r, 1000));
+
+    // Third guess should succeed after waiting
+    const guessRes = addGuess(hostRes.room.code, hostRes.participantId, "wrong 3");
+    expect(guessRes.room.guesses).toHaveLength(2); // wrong 1 and wrong 3
+  });
 });
