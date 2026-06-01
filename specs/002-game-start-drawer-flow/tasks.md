@@ -38,8 +38,8 @@ description: "Task list for Game Start & Drawer Flow implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T002 Update Zod schemas for Room and Round in `backend/src/models/room.ts` (data-model.md)
-- [ ] T003 Update backend Room structure to support `currentRound` and statuses in `backend/src/services/roomService.ts`
+- [ ] T002 Update Zod schemas for Room and Round in `backend/src/models/game.ts` (data-model.md)
+- [ ] T003 Update backend Room structure to support `currentRound` and statuses in `backend/src/services/roomStore.ts`
 - [ ] T004 [P] Update frontend types for Room state in `frontend/src/state/roomStore.ts`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
@@ -54,8 +54,8 @@ description: "Task list for Game Start & Drawer Flow implementation"
 
 ### Implementation for User Story 1
 
-- [ ] T005 [US1] Implement Start Game logic (assign drawer, pick words) in `backend/src/services/roomService.ts`
-- [ ] T006 [US1] Create POST `/api/rooms/:roomId/start` endpoint in `backend/src/api/room.ts`
+- [ ] T005 [US1] Implement Start Game logic (assign drawer, pick words) in `backend/src/services/roomStore.ts`
+- [ ] T006 [US1] Create POST `/api/rooms/:roomId/start` endpoint in `backend/src/api/rooms.ts`
 - [ ] T007 [P] [US1] Add "Start Game" button for Host in `frontend/src/components/Lobby.tsx`
 - [ ] T008 [P] [US1] Create basic Game view component in `frontend/src/components/Game.tsx`
 - [ ] T009 [US1] Handle transition to Game view in `frontend/src/pages/RoomPage.tsx` based on `status === 'Game'`
@@ -73,9 +73,9 @@ description: "Task list for Game Start & Drawer Flow implementation"
 
 ### Implementation for User Story 2
 
-- [ ] T011 [US2] Implement payload sanitization in `backend/src/api/room.ts` so `wordOptions` and `secretWord` are only sent if `X-Player-ID` matches `drawerId`
-- [ ] T012 [US2] Implement Select Secret Word logic in `backend/src/services/roomService.ts`
-- [ ] T013 [US2] Create POST `/api/rooms/:roomId/word` endpoint in `backend/src/api/room.ts`
+- [ ] T011 [US2] Implement payload sanitization in `backend/src/api/rooms.ts` so `wordOptions` and `secretWord` are only sent if `X-Player-ID` matches `drawerId`
+- [ ] T012 [US2] Implement Select Secret Word logic in `backend/src/services/roomStore.ts`
+- [ ] T013 [US2] Create POST `/api/rooms/:roomId/word` endpoint in `backend/src/api/rooms.ts`
 - [ ] T014 [P] [US2] Create Word Selection UI for Drawer in `frontend/src/components/WordSelection.tsx`
 - [ ] T015 [P] [US2] Display "Waiting for Drawer..." for Guessers in `frontend/src/components/Game.tsx`
 - [ ] T016 [US2] Add `selectWord` API call to `frontend/src/state/roomStore.ts`
@@ -92,7 +92,7 @@ description: "Task list for Game Start & Drawer Flow implementation"
 
 ### Implementation for User Story 3
 
-- [ ] T017 [US3] Start round timer on backend when word is selected in `backend/src/services/roomService.ts`
+- [ ] T017 [US3] Start round timer on backend when word is selected in `backend/src/services/roomStore.ts`
 - [ ] T018 [P] [US3] Render Canvas UI for Drawer in `frontend/src/components/Game.tsx`
 - [ ] T019 [P] [US3] Render Round Timer for all players in `frontend/src/components/Game.tsx`
 

@@ -57,10 +57,8 @@ specs/001-room-setup-lobby/
 backend/
 ├── src/
 │   ├── models/
-│   │   ├── Room.ts
-│   │   └── Player.ts
-│   ├── services/
-│   │   └── RoomService.ts
+│   │   ├── game.ts
+│   │   └── roomStore.ts
 │   └── api/
 │       └── roomRoutes.ts
 

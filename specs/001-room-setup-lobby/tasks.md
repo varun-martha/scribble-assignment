@@ -40,8 +40,8 @@
 
 ### Implementation for User Story 1
 
-- [X] T009 [P] [US1] Implement `Room` and `Player` interfaces in `backend/src/models/Room.ts` and `backend/src/models/Player.ts`
-- [X] T010 [US1] Implement `createRoom` method in `backend/src/services/RoomService.ts` (generates 6-char code)
+- [X] T009 [P] [US1] Implement `Room` and `Participant` interfaces in `backend/src/models/game.ts`
+- [X] T010 [US1] Implement `createRoom` method in `backend/src/services/roomStore.ts` (generates 6-char code)
 - [X] T011 [US1] Implement `POST /api/rooms` endpoint in `backend/src/api/roomRoutes.ts`
 - [X] T012 [P] [US1] Add `createRoom` API call to `frontend/src/services/api.ts`
 - [X] T013 [US1] Update `roomStore.ts` with create room logic
@@ -60,7 +60,7 @@
 
 ### Implementation for User Story 2
 
-- [X] T016 [US2] Implement `joinRoom` method in `backend/src/services/RoomService.ts` (with validation for max 20 players and unique usernames)
+- [X] T016 [US2] Implement `joinRoom` method in `backend/src/services/roomStore.ts` (with validation for max 20 players and unique usernames)
 - [X] T017 [US2] Implement `POST /api/rooms/:code/join` endpoint in `backend/src/api/roomRoutes.ts`
 - [X] T018 [P] [US2] Add `joinRoom` API call to `frontend/src/services/api.ts`
 - [X] T019 [US2] Update `roomStore.ts` with join room logic
@@ -79,7 +79,7 @@
 
 ### Implementation for User Story 3
 
-- [X] T022 [US3] Implement `getRoom` and `leaveRoom` methods in `backend/src/services/RoomService.ts`
+- [X] T022 [US3] Implement `getRoom` method in `backend/src/services/roomStore.ts`
 - [X] T023 [US3] Implement `GET /api/rooms/:code` and `POST /api/rooms/:code/leave` in `backend/src/api/roomRoutes.ts`
 - [X] T024 [P] [US3] Add `getRoom` and `leaveRoom` API calls to `frontend/src/services/api.ts`
 - [X] T025 [US3] Implement HTTP polling in `frontend/src/components/Lobby.tsx` using `setInterval` (~2s interval)

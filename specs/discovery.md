@@ -35,3 +35,12 @@ Contains the React SPA application.
 
 ## Polling Strategy
 Since WebSockets are forbidden, the frontend implements a fast-polling strategy (typically every 1000-2000ms depending on state) via `src/state/roomStore.ts` to sync strokes, guesses, and phase changes from the backend.
+
+## Assumptions
+- Assume a maximum of 20 players per room to maintain reasonable performance under HTTP polling.
+- Assume browsers keep polling active for at least 2 minutes in background tabs before throttling completely, to avoid aggressive participant removal.
+
+## Identified Gaps
+- **Lack of Persistent Storage**: The entirely in-memory state means all active games, scores, and rooms are lost upon server restart or crash.
+- **HTTP Polling Overhead**: Relying on strict HTTP polling constraint dramatically increases server load and latency compared to a WebSocket connection, which could degrade drawing responsiveness.
+- **No Authenticated Sessions**: Players are identified only by generated UUIDs stored locally per session, which prevents long-term player tracking or reconnection across devices.
