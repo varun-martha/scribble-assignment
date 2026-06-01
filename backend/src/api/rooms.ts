@@ -10,7 +10,7 @@ import {
   addStrokeSchema,
   addGuessSchema
 } from "./schemas.js";
-import { createRoom, getRoom, joinRoom, toRoomSnapshot, startGame, selectWord, addStroke, addGuess, resetRoomToLobby } from "../services/roomStore.js";
+import { createRoom, getRoom, joinRoom, toRoomSnapshot, startGame, selectWord, addStroke, addGuess, resetRoomToLobby, clearStrokes } from "../services/roomStore.js";
 
 export function createRoomsRouter() {
   const router = Router();
@@ -122,6 +122,25 @@ export function createRoomsRouter() {
       });
     } catch (error: any) {
       if (error.message === "Invalid room state" || error.message === "Only the drawer can draw" || error.message === "Not currently drawing") {
+        next(new HttpError(400, error.message));
+      } else {
+        next(error);
+      }
+    }
+  });
+
+  router.delete("/:code/strokes", (request, response, next) => {
+    try {
+      const { code } = roomCodeParamsSchema.parse(request.params);
+      const { participantId } = startGameSchema.parse(request.body); // use startGameSchema because it expects just participantId
+      const result = clearStrokes(code.toUpperCase(), participantId);
+
+      response.json({
+        participantId: result.participantId,
+        room: toRoomSnapshot(result.room, result.participantId)
+      });
+    } catch (error: any) {
+      if (error.message === "Invalid room state" || error.message === "Only the drawer can clear strokes" || error.message === "Not currently drawing") {
         next(new HttpError(400, error.message));
       } else {
         next(error);

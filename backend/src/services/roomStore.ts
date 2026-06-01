@@ -186,15 +186,11 @@ export function startGame(code: string, participantId: string) {
   if (room.participants.length < 2) throw new Error("Minimum 2 players required to start");
   if (room.participants[0].id !== participantId) throw new Error("Only the host can start the game");
 
-  const drawerIndex = Math.floor(Math.random() * room.participants.length);
+  const drawerIndex = room.participants.length > 1 ? 1 : 0;
   const drawerId = room.participants[drawerIndex].id;
 
   const allWords = listWords();
-  const wordOptions: string[] = [];
-  while (wordOptions.length < 3 && allWords.length > 0) {
-    const idx = Math.floor(Math.random() * allWords.length);
-    wordOptions.push(allWords.splice(idx, 1)[0]);
-  }
+  const wordOptions: string[] = allWords.slice(0, 3);
 
   room.status = "game";
   room.currentRound = {
@@ -240,6 +236,18 @@ export function addStroke(code: string, participantId: string, stroke: Stroke) {
     room.strokes.push(stroke);
   }
 
+  room.updatedAt = now();
+  rooms.set(code, room);
+  return { participantId, room: cloneRoom(room) };
+}
+
+export function clearStrokes(code: string, participantId: string) {
+  const room = rooms.get(code);
+  if (!room || room.status !== "game" || !room.currentRound) throw new Error("Invalid room state");
+  if (room.currentRound.drawerId !== participantId) throw new Error("Only the drawer can clear strokes");
+  if (room.currentRound.roundStatus !== "Drawing") throw new Error("Not currently drawing");
+
+  room.strokes = [];
   room.updatedAt = now();
   rooms.set(code, room);
   return { participantId, room: cloneRoom(room) };

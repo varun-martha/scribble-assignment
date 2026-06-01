@@ -121,5 +121,11 @@ export const api = {
       method: "POST",
       body: JSON.stringify({ participantId })
     });
+  },
+  clearStrokes(code: string, participantId: string) {
+    return request<RoomSessionResponse>(`/rooms/${encodeURIComponent(code)}/strokes`, {
+      method: "DELETE",
+      body: JSON.stringify({ participantId })
+    });
   }
 };

@@ -133,6 +133,18 @@ class RoomStore {
     });
   }
 
+  async clearCanvas() {
+    if (!this.state.room || !this.state.participantId) return;
+
+    // Optimistic UI update
+    const newRoom = { ...this.state.room, strokes: [] };
+    this.setRoomSnapshot(newRoom);
+
+    api.clearStrokes(this.state.room.code, this.state.participantId).catch(err => {
+      console.error("Failed to clear canvas", err);
+    });
+  }
+
   async addGuess(text: string) {
     if (!this.state.room || !this.state.participantId) return;
     const response = await this.withLoading(() => api.addGuess(this.state.room!.code, this.state.participantId!, text));

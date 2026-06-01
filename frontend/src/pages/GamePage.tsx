@@ -97,7 +97,7 @@ export function GamePage() {
 
         <div className="game-page__main">
           <Card title="Canvas">
-            <div className="canvas-placeholder flex items-center justify-center bg-white" style={{ minHeight: '500px' }}>
+            <div className="canvas-placeholder flex items-center justify-center bg-white flex-col" style={{ minHeight: '500px', display: 'flex', flexDirection: 'column' }}>
               {roundStatus === "SelectingWord" ? (
                 isDrawer ? (
                   <WordSelection 
@@ -109,7 +109,16 @@ export function GamePage() {
                   <div className="text-gray-500 font-medium">Waiting for drawer to pick a word...</div>
                 )
               ) : roundStatus === "Drawing" ? (
-                <Canvas strokes={room.strokes || []} isDrawer={isDrawer} width={800} height={500} />
+                <>
+                  <Canvas strokes={room.strokes || []} isDrawer={isDrawer} width={800} height={500} />
+                  {isDrawer && (
+                    <div style={{ marginTop: '10px' }}>
+                      <button className="button button--secondary" onClick={() => roomStore.clearCanvas()}>
+                        Clear Canvas
+                      </button>
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="text-gray-500 font-medium">Waiting...</div>
               )}
