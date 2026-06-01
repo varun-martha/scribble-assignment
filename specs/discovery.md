@@ -39,8 +39,14 @@ Since WebSockets are forbidden, the frontend implements a fast-polling strategy 
 ## Assumptions
 - Assume a maximum of 20 players per room to maintain reasonable performance under HTTP polling.
 - Assume browsers keep polling active for at least 2 minutes in background tabs before throttling completely, to avoid aggressive participant removal.
+- Assume that a single round is sufficient for the game loop, returning to the lobby instead of supporting a multi-round tournament structure.
+- Assume players will not actively try to tamper with the API directly (e.g., bypassing client-side constraints or drawing strokes outside canvas boundaries).
+- Assume target words are primarily single English words, avoiding complex punctuation, to simplify guessing and validation logic.
 
 ## Identified Gaps
 - **Lack of Persistent Storage**: The entirely in-memory state means all active games, scores, and rooms are lost upon server restart or crash.
 - **HTTP Polling Overhead**: Relying on strict HTTP polling constraint dramatically increases server load and latency compared to a WebSocket connection, which could degrade drawing responsiveness.
 - **No Authenticated Sessions**: Players are identified only by generated UUIDs stored locally per session, which prevents long-term player tracking or reconnection across devices.
+- **No Room Reconnection/Recovery**: If a player's browser crashes or they reload the page, they receive a new UUID and are treated as an entirely new player, losing their score and identity.
+- **Payload Bloat**: Since all drawing strokes are continually synced via HTTP polling, long games with complex drawings will result in very large JSON payloads constantly being transmitted, straining bandwidth.
+- **Limited Scalability**: Storing all active rooms and their complete stroke histories entirely in Node.js memory limits the number of concurrent rooms the server can safely handle before running out of memory.
